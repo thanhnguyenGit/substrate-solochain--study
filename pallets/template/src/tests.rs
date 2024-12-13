@@ -1,4 +1,4 @@
-use crate::{mock::*, Error, Event, Something};
+use crate::{mock::*, Balances, Error, Event, Pallet, Something, TotalIssuance};
 use frame_support::{assert_noop, assert_ok};
 
 #[test]
@@ -30,4 +30,22 @@ fn correct_error_for_none_value() {
             Error::<Test>::NoneValue
         );
     });
+}
+#[test]
+fn mint_unsafe_work() {
+    new_test_ext().execute_with(|| {
+        // expect Alice account to have no fund
+        assert_eq!(Balances::<Test>::get(&ALICE), None);
+        assert_eq!(TotalIssuance::<Test>::get(), None);
+        // mint some funds into Alice's account
+        assert_ok!(Pallet::<Test>::mint_unsafe(
+            RuntimeOrigin::signed(ALICE),
+            ALICE,
+            100
+        ));
+
+        // re-check Alice account after mint
+        assert_eq!(Balances::<Test>::get(&ALICE), Some(100));
+        assert_eq!(TotalIssuance::<Test>::get(), Some(100));
+    })
 }

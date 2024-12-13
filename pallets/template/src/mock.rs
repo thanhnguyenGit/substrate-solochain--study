@@ -4,6 +4,9 @@ use sp_runtime::BuildStorage;
 
 type Block = frame_system::mocking::MockBlock<Test>;
 
+pub(crate) const ALICE: u64 = 1;
+pub(crate) const BOB: u64 = 2;
+pub(crate) const CHARLIE: u64 = 3;
 // Configure a mock runtime to test the pallet.
 frame_support::construct_runtime!(
     pub enum Test
